@@ -15,7 +15,7 @@ const User = () => {
 
   return (
 			<SafeAreaView style={{backgroundColor: '#ffffff'}}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
         <View
           style={styles.container}>
         </View>

@@ -9,26 +9,31 @@ import {
   View,
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import Home from './screens/home';
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import User from './screens/user';
+import Main from './screens/main';
+import Quiz from './screens/quiz';
 
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const App = () => {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="User" component={User} />
-      </Tab.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="Main" component={Main} />
+        <Stack.Screen name="Quiz" component={Quiz} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  
+
 });
 
 export default App;
