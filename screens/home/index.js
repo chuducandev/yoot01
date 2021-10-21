@@ -50,13 +50,13 @@ const Home = () => {
                 iconType={0}
               />
               <QuizCard
-                quiz={quizzes[0]}
+                quiz={quizzes[1]}
                 iconBackgroundColor="#E6FEF0"
                 iconType={1}
               />
               <Text style={styles.categoryTitle}>Live Quiz</Text>
               <QuizCard
-                quiz={quizzes[0]}
+                quiz={quizzes[2]}
                 iconBackgroundColor="#EDEAFB"
                 iconType={2}
               />
