@@ -13,8 +13,7 @@ import InrFill from '../../../assets/icons/inr-fill.svg'
 import { useNavigation } from '@react-navigation/core';
 
 const QuizCard = ({
-	header,
-	description,
+	quiz,
 	iconBackgroundColor,
 	iconType,
 }) => {
@@ -23,7 +22,7 @@ const QuizCard = ({
   return (
 		<TouchableOpacity 
 			style={styles.container}
-			onPress={() => navigation.navigate('Quiz')}	
+			onPress={() => navigation.navigate('Quiz', {quiz: quiz})}	
 		>
 			<View style={[styles.iconContainer, {backgroundColor: iconBackgroundColor}]}>
 				{iconType == 0 ? <HashFill width={40} height={40} /> :
@@ -31,8 +30,10 @@ const QuizCard = ({
 											 	 <InrFill width={40} height={40} />}
 			</View>
 			<View style={styles.contentContainer}>
-				<Text style={styles.header}>{header}</Text>
-				<Text style={styles.description}>{description}</Text>
+				<Text style={styles.header}>{quiz.title}</Text>
+				<Text style={styles.description}>
+					{quiz.questions.length} / {quiz.questions.length} question{quiz.questions.length > 1 ? 's' : ''}
+				</Text>
 			</View>
 		</TouchableOpacity>
   );	

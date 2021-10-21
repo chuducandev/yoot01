@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/core';
 import React, {useState} from 'react';
 import {
   SafeAreaView,
@@ -6,16 +7,28 @@ import {
   StyleSheet,
   Text,
   View,
+	TouchableOpacity,
 } from 'react-native';
 
 import BackRegular from '../../assets/icons/back-regular.svg'
 import QuestionRegular from '../../assets/icons/question-regular.svg'
 import ChoiceCard from '../../components/quiz/choice-card';
 
-const Quiz = () => {
+const Quiz = ({route}) => {
 	const choices = ['Most expensive', 'More expensive', 'Expensivest', 'As expensive']
+	const {quiz} = route.params
 
 	const [selection, setSelection] = useState(0)
+	const [currentQuestion, setCurrentQuestion] = useState(0)
+
+	const navigation = useNavigation()
+
+	function nextQuestion() {
+		if (currentQuestion == quiz.questions.length-1) 
+			navigation.goBack()
+		else
+			setCurrentQuestion(oldCurrentQuestion => oldCurrentQuestion + 1)
+	}
 
   return (
 		<SafeAreaView style={{backgroundColor: '#ffffff'}}>
@@ -23,16 +36,16 @@ const Quiz = () => {
 				<View style={styles.container}>
 					<View style={styles.header}>
 						<BackRegular width={24} height={24} />
-						<Text style={styles.headerText}>English for beginner</Text>
+						<Text style={styles.headerText}>{quiz.title}</Text>
 						<QuestionRegular width={24} height={24} />
 					</View>
 					<View style={styles.body}>
 						<View style={styles.questionContainer}> 
-							<Text style={styles.questionNumber}>Question 6/15</Text>
-							<Text style={styles.question}>Motor racing is the ---- sport in the world.</Text>
+							<Text style={styles.questionNumber}>Question {currentQuestion + 1}/{quiz.questions.length}</Text>
+							<Text style={styles.question}>{quiz.questions[currentQuestion].question}</Text>
 						</View>
 						<View>
-							{choices.map((choice, index) => (
+							{quiz.questions[currentQuestion].choices.map((choice, index) => (
 								<ChoiceCard 
 									content={choice}
 									index={index}
@@ -42,9 +55,12 @@ const Quiz = () => {
 							))}
 							<View style={{height: 30}} />
 						</View>
-						<View style={styles.nextButton}>
-							<Text style={styles.nextButtonText}>Next</Text>
-						</View>
+						<TouchableOpacity 
+							style={styles.nextButton}
+							onPress={() => nextQuestion()}
+						>
+							<Text style={styles.nextButtonText}>{currentQuestion == quiz.questions.length-1 ? 'Finish' : 'Next'}</Text>
+						</TouchableOpacity>
 					</View>
 				</View>
       </SafeAreaView>
