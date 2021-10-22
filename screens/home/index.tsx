@@ -5,17 +5,19 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  ToastAndroid,
   View,
 } from 'react-native';
 
 import firestore from '@react-native-firebase/firestore';
+import axios from 'axios'
 
 import { RootState, AppDispatch } from '../../store';
 
 import QuizCode from '../../components/home/quiz-code';
 import QuizCard from '../../components/home/quiz-card';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { setQuizzes } from '../../store/quizzes';
+import { setQuizzes, addToQuizzes } from '../../store/quizzes';
 import { QuizState } from '../../types';
 
 const mapDispatch = {
@@ -23,7 +25,45 @@ const mapDispatch = {
 }
 
 const Home = () => {
+  function shuffleArray(array: any[]) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  async function fetchQuiz(title: string, url: string) {
+    try {
+      const { data } : any = await axios.get(url)
+      if ('results' in data) {
+        data.results.forEach((result: any) => console.log(result))
+        const newQuiz: QuizState = {
+          title: title,
+          questions: data.results.map((result: any) => {
+            const choices: string[] = [...result.incorrect_answers, result.correct_answer]
+            shuffleArray(choices)
+            let correctAnswer: number = -1
+            for (let i = 0; i < choices.length; i++) {
+              if (choices[i] == result.correct_answer) correctAnswer = i
+            }
+
+            return {
+            question: result.question,
+            choices: choices,
+            correctAnswer: correctAnswer,
+          }})
+        }
+        dispatch(addToQuizzes(newQuiz))
+      } else {
+        ToastAndroid.show('Something wrong happen.', ToastAndroid.SHORT)
+      }
+    } catch(error) {
+      // ToastAndroid.show(error as string, ToastAndroid.SHORT)
+    }
+  }
+
   const [quizCode, setQuizCode] = useState<string>('')
+  const [loaded, setLoaded] = useState<boolean>(false)
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -36,7 +76,14 @@ const Home = () => {
   }
 
   useEffect(() => {
-    fetchQuizzes()
+    // fetchQuizzes()
+    if (!loaded) {
+      fetchQuiz('Books', 'https://opentdb.com/api.php?amount=10&category=10')
+      fetchQuiz('Films', 'https://opentdb.com/api.php?amount=10&category=11')
+      fetchQuiz('Music', 'https://opentdb.com/api.php?amount=10&category=12')
+      fetchQuiz('Board Games', 'https://opentdb.com/api.php?amount=10&category=16')
+      setLoaded(true)
+    }
   }, [])
 
   return (
@@ -57,22 +104,13 @@ const Home = () => {
             <QuizCode />
             {quizzes && quizzes.length > 0 && <View>
               <Text style={styles.categoryTitle}>Recent Quiz</Text>
-              <QuizCard
-                quiz={quizzes[0]} 
-                iconBackgroundColor="#FDF3DA"
-                iconType={0}
-              />
-              <QuizCard
-                quiz={quizzes[1]}
-                iconBackgroundColor="#E6FEF0"
-                iconType={1}
-              />
-              <Text style={styles.categoryTitle}>Live Quiz</Text>
-              <QuizCard
-                quiz={quizzes[2]}
-                iconBackgroundColor="#EDEAFB"
-                iconType={2}
-              />
+              {quizzes.map((quiz: QuizState, index: number) => (
+                <QuizCard 
+                  quiz={quiz} 
+                  iconBackgroundColor={["#FDF3DA", "#E6FEF0", "#EDEAFB"][index % 3]}
+                  iconType={index % 3}
+                />
+              ))}
               <View style={{height: 50}}/>
             </View>}
           </View>

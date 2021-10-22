@@ -10,6 +10,8 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 
+import {decode} from 'html-entities'
+
 import BackRegular from '../../assets/icons/back-regular.svg'
 import QuestionRegular from '../../assets/icons/question-regular.svg'
 import ChoiceCard from '../../components/quiz/choice-card';
@@ -47,7 +49,7 @@ const Quiz : FC<QuizProps> = ({route}) => {
 					<View style={styles.body}>
 						<View> 
 							<Text style={styles.questionNumber}>Question {currentQuestion + 1}/{quiz.questions.length}</Text>
-							<Text style={styles.question}>{quiz.questions[currentQuestion].question}</Text>
+							<Text style={styles.question}>{decode(quiz.questions[currentQuestion].question)}</Text>
 						</View>
 						<View>
 							{quiz.questions[currentQuestion].choices.map((choice, index) => (
@@ -105,7 +107,7 @@ const styles = StyleSheet.create({
 	},
 	question: {
 		fontFamily: 'Nunito Bold',
-    fontSize: 26,
+    fontSize: 22,
     color: '#4A5462',
 		marginBottom: 5,
 	},

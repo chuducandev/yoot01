@@ -7,6 +7,8 @@ import {
   View,
 } from 'react-native';
 
+import {decode} from 'html-entities'
+
 type ChoiceCardProps = {
 	content: string,
 	index: number,
@@ -31,7 +33,7 @@ const ChoiceCard : FC<ChoiceCardProps> = ({content, index, selection, setSelecti
 			</View>
 			<Text style={[styles.content, {
 				color: selection == index ? '#ffffff' : '#000000',
-			}]}>{content}</Text>
+			}]}>{decode(content)}</Text>
 		</TouchableOpacity>
   );	
 };

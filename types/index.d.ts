@@ -7,5 +7,4 @@ export type QuestionState = {
 export type QuizState = {
 	title: string;
 	questions: QuestionState[];
-
 }
