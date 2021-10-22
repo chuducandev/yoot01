@@ -11,18 +11,19 @@ import HashFill from '../../../assets/icons/hash-fill.svg'
 import DoubleLeftFill from '../../../assets/icons/double-left-fill.svg'
 import InrFill from '../../../assets/icons/inr-fill.svg'
 import { useNavigation } from '@react-navigation/core';
+import { QuizState } from '../../../types';
 
-const QuizCard = ({
-	quiz,
-	iconBackgroundColor,
-	iconType,
+const QuizCard = ({quiz, iconBackgroundColor, iconType} : {
+	quiz: QuizState,
+	iconBackgroundColor: string,
+	iconType: number,
 }) => {
 	const navigation = useNavigation()
 
   return (
 		<TouchableOpacity 
 			style={styles.container}
-			onPress={() => navigation.navigate('Quiz', {quiz: quiz})}	
+			onPress={() => navigation.navigate('Quiz' as never, {quiz: quiz} as never)}	
 		>
 			<View style={[styles.iconContainer, {backgroundColor: iconBackgroundColor}]}>
 				{iconType == 0 ? <HashFill width={40} height={40} /> :

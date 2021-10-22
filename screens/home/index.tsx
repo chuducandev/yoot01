@@ -10,16 +10,29 @@ import {
 
 import firestore from '@react-native-firebase/firestore';
 
+import { RootState, AppDispatch } from '../../store';
+
 import QuizCode from '../../components/home/quiz-code';
 import QuizCard from '../../components/home/quiz-card';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { setQuizzes } from '../../store/quizzes';
+import { QuizState } from '../../types';
+
+const mapDispatch = {
+  setQuizzes,
+}
 
 const Home = () => {
-  const [quizzes, setQuizzes] = useState(null)
-  const [quizCode, setQuizCode] = useState('')
+  const [quizCode, setQuizCode] = useState<string>('')
+
+  const dispatch = useDispatch<AppDispatch>()
+
+  const quizzes: QuizState[] | null = useSelector((state: RootState) => state.quizzes)
 
   async function fetchQuizzes() {
-    const newQuizzes = await (await firestore().collection('quizzes').get()).docs.map(doc => doc.data());
-    setQuizzes(newQuizzes)
+    const newQuizzes = await (await firestore().collection('quizzes').get()).docs.map(doc => doc.data()) as QuizState[];
+    dispatch(setQuizzes(newQuizzes))
+    // console.log(quizzes)
   }
 
   useEffect(() => {
@@ -128,4 +141,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Home;
+export default connect(null, mapDispatch)(Home);

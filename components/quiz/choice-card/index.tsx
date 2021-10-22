@@ -7,11 +7,11 @@ import {
   View,
 } from 'react-native';
 
-const ChoiceCard = ({
-	content,
-	index,
-	selection,
-	setSelection,
+const ChoiceCard = ({content, index, selection, setSelection} : {
+	content: string,
+	index: number,
+	selection: number,
+	setSelection: (value: number | ((oldValue: number) => number)) => void,
 }) => {
 
   return (
