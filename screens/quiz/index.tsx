@@ -1,5 +1,5 @@
 import { RouteProp, useNavigation } from '@react-navigation/core';
-import React, {useState} from 'react';
+import React, {useState, FC} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -15,9 +15,11 @@ import QuestionRegular from '../../assets/icons/question-regular.svg'
 import ChoiceCard from '../../components/quiz/choice-card';
 import { QuizState } from '../../types';
 
-const Quiz = ({route} : {
+type QuizProps = {
 	route: RouteProp<{params: {quiz: QuizState}}>;
-}) => {
+}
+
+const Quiz : FC<QuizProps> = ({route}) => {
 	const choices = ['Most expensive', 'More expensive', 'Expensivest', 'As expensive']
 	const {quiz} = route.params
 
@@ -35,7 +37,7 @@ const Quiz = ({route} : {
 
   return (
 		<SafeAreaView style={{backgroundColor: '#ffffff'}}>
-      <StatusBar barStyle="light-content" backgroundColor="#F8F9F8" />
+      <StatusBar barStyle="dark-content" backgroundColor="#F8F9F8" />
 				<View style={styles.container}>
 					<View style={styles.header}>
 						<BackRegular width={24} height={24} />

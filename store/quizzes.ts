@@ -1,15 +1,15 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {CaseReducer, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import { QuizState } from '../types'
+
+const setQuizzesReducer: CaseReducer<QuizState[], PayloadAction<QuizState[]>> = (state, action) => action.payload
+
+const initialState: QuizState[] | null = []
 
 const quizzesSlice = createSlice({
 	name: 'quizzes',
-	initialState: null,
+	initialState,
 	reducers: {
-		setQuizzes: (state: QuizState[] | null, action: PayloadAction<QuizState[]>) => {
-			console.log('In reducer:')
-			console.log(action.payload)
-			return action.payload
-		}
+		setQuizzes: setQuizzesReducer
 	}
 })
 

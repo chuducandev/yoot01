@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, FC} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,12 +7,14 @@ import {
   View,
 } from 'react-native';
 
-const ChoiceCard = ({content, index, selection, setSelection} : {
+type ChoiceCardProps = {
 	content: string,
 	index: number,
 	selection: number,
 	setSelection: (value: number | ((oldValue: number) => number)) => void,
-}) => {
+}
+
+const ChoiceCard : FC<ChoiceCardProps> = ({content, index, selection, setSelection}) => {
 
   return (
 		<TouchableOpacity 

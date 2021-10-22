@@ -55,7 +55,7 @@ const Home = () => {
               </View>
             </View>
             <QuizCode />
-            {quizzes && <View>
+            {quizzes && quizzes.length > 0 && <View>
               <Text style={styles.categoryTitle}>Recent Quiz</Text>
               <QuizCard
                 quiz={quizzes[0]} 

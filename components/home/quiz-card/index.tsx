@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, FC} from 'react';
 import {
   StyleSheet,
   Text,
@@ -13,11 +13,13 @@ import InrFill from '../../../assets/icons/inr-fill.svg'
 import { useNavigation } from '@react-navigation/core';
 import { QuizState } from '../../../types';
 
-const QuizCard = ({quiz, iconBackgroundColor, iconType} : {
+type QuizCardProps = {
 	quiz: QuizState,
 	iconBackgroundColor: string,
 	iconType: number,
-}) => {
+}
+
+const QuizCard : FC<QuizCardProps> = ({quiz, iconBackgroundColor, iconType}) => {
 	const navigation = useNavigation()
 
   return (
