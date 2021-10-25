@@ -17,3 +17,9 @@ export type LeaderboardState = {
 	name: string,
 	score: number,
 } []
+
+export type UserState = {
+	id?: string,
+	firstName?: string,
+	lastName?: string,
+}

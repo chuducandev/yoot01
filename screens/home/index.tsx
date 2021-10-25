@@ -7,9 +7,11 @@ import {
   Text,
   ToastAndroid,
   View,
+  TouchableOpacity,
 } from 'react-native';
 
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth'
 import axios from 'axios'
 
 import { RootState, AppDispatch } from '../../store';
@@ -76,6 +78,17 @@ const Home = () => {
     // console.log(quizzes)
   }
 
+  async function handleSignOut() {
+		auth()
+			.signOut()
+      .then(() => {
+        dispatch(setQuizzes([]))
+      })
+			.catch (error => {
+				console.log(error)
+			})
+	}
+
   useEffect(() => {
     // fetchQuizzes()
     if (!loaded) {
@@ -98,9 +111,12 @@ const Home = () => {
                 <Text style={styles.bigSloganText}>Lets play</Text>
                 <Text style={styles.smallSloganText}>And be the first!</Text>
               </View>
-              <View style={styles.avatar}>
+              <TouchableOpacity
+                style={styles.avatar}
+                onPress={() => handleSignOut()}  
+              >
                 <Text style={styles.shortName}>LS</Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <QuizCode />
             {quizzes && quizzes.length > 0 && <View>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -12,20 +12,31 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import { store } from './store';
+import { AppDispatch, store } from './store';
+
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
 
 import User from './screens/user';
 import Main from './screens/main';
 import Quiz from './screens/quiz';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import Results from './screens/results';
+import Login from './screens/log-in';
+import { setUser } from './store/user';
 
 const Stack = createNativeStackNavigator()
 
 const App = () => {
+  const [signedIn, setSignedIn] = useState(auth().currentUser != null);
+
+  const onAuthStateChanged = (user: FirebaseAuthTypes.User | null) => {
+    setSignedIn(user != null)
+  }
+
   useEffect(() => {
-    setTimeout(() => console.log(store.getState()), 5000)
-  }, [])
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  })
 
   return (
     <Provider store={store}>
@@ -35,9 +46,15 @@ const App = () => {
             headerShown: false,
           }}
         >
+          {signedIn ?
+        <>
           <Stack.Screen name="Main" component={Main} />
           <Stack.Screen name="Quiz" component={Quiz} />
           <Stack.Screen name="Results" component={Results} />
+        </> : 
+        <>
+          <Stack.Screen name="Login" component={Login} />
+        </>}
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

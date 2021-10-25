@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
 });
 
 export default Results;
+
 // score = a * time + b
 // time = 2000 * numOfQuestions => results * 100 = 2000 * numOfQuestions * a + b
 // time = 10000 * numOfQuestions => results * 50 = 10000 * numOfQuestions * a + b
