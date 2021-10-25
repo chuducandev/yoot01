@@ -5,6 +5,15 @@ export type QuestionState = {
 }
 
 export type QuizState = {
+	id: string,
 	title: string;
 	questions: QuestionState[];
 }
+
+export type ResultsState = number;
+
+export type LeaderboardState = {
+	quizId: string,
+	name: string,
+	score: number,
+} []

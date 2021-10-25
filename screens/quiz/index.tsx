@@ -1,5 +1,5 @@
 import { RouteProp, useNavigation } from '@react-navigation/core';
-import React, {useState, FC} from 'react';
+import React, {useState, FC, useEffect} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -16,60 +16,84 @@ import BackRegular from '../../assets/icons/back-regular.svg'
 import QuestionRegular from '../../assets/icons/question-regular.svg'
 import ChoiceCard from '../../components/quiz/choice-card';
 import { QuizState } from '../../types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store';
+import { addToResults, resetResults } from '../../store/results';
+import { isDraftable } from 'immer';
 
 type QuizProps = {
 	route: RouteProp<{params: {quiz: QuizState}}>;
 }
 
 const Quiz : FC<QuizProps> = ({route}) => {
-	const choices = ['Most expensive', 'More expensive', 'Expensivest', 'As expensive']
 	const {quiz} = route.params
 
-	const [selection, setSelection] = useState(0)
-	const [currentQuestion, setCurrentQuestion] = useState(0)
+	const [selection, setSelection] = useState<number>(0)
+	const [currentQuestion, setCurrentQuestion] = useState<number>(0)
+	const [startingTime, setStartingTime] = useState<number>(0)
 
-	const navigation = useNavigation()
+	const dispatch = useDispatch<AppDispatch>()
+
+	const navigation = useNavigation<NativeStackNavigationProp<{Results: {
+		quizId: string,
+		time: number,
+		numOfQuestions: number,
+	}}>>()
 
 	function nextQuestion() {
-		if (currentQuestion == quiz.questions.length-1) 
-			navigation.goBack()
-		else
+		if (selection == quiz.questions[currentQuestion].correctAnswer) dispatch(addToResults(1))
+		if (currentQuestion == quiz.questions.length-1) {
+			navigation.pop()
+			navigation.navigate('Results', {
+				quizId: quiz.id,
+				time: Date.now() - startingTime,
+				numOfQuestions: quiz.questions.length,
+			})
+		} else
 			setCurrentQuestion(oldCurrentQuestion => oldCurrentQuestion + 1)
 	}
 
+	useEffect(() => {
+		dispatch(resetResults(0))
+		setStartingTime(Date.now())
+	}, [])
+
   return (
-		<SafeAreaView style={{backgroundColor: '#ffffff'}}>
+		<SafeAreaView style={{backgroundColor: '#F8F9F8'}}>
       <StatusBar barStyle="dark-content" backgroundColor="#F8F9F8" />
-				<View style={styles.container}>
-					<View style={styles.header}>
-						<BackRegular width={24} height={24} />
-						<Text style={styles.headerText}>{quiz.title}</Text>
-						<QuestionRegular width={24} height={24} />
-					</View>
-					<View style={styles.body}>
-						<View> 
-							<Text style={styles.questionNumber}>Question {currentQuestion + 1}/{quiz.questions.length}</Text>
-							<Text style={styles.question}>{decode(quiz.questions[currentQuestion].question)}</Text>
+				<ScrollView style={{backgroundColor: '#F8F9F8', minHeight: '100%'}}>
+					<View style={styles.container}>
+						<View style={styles.header}>
+							<BackRegular width={24} height={24} />
+							<Text style={styles.headerText}>{quiz.title}</Text>
+							<QuestionRegular width={24} height={24} />
 						</View>
-						<View>
-							{quiz.questions[currentQuestion].choices.map((choice, index) => (
-								<ChoiceCard 
-									content={choice}
-									index={index}
-									selection={selection}
-									setSelection={setSelection}
-								/>
-							))}
-							<View style={{height: 30}} />
+						<View style={styles.body}>
+							<View>
+								<Text style={styles.questionNumber}>Question {currentQuestion + 1}/{quiz.questions.length}</Text>
+								<Text style={styles.question}>{decode(quiz.questions[currentQuestion].question)}</Text>
+							</View>
+							<View>
+								{quiz.questions[currentQuestion].choices.map((choice, index) => (
+									<ChoiceCard
+										content={choice}
+										index={index}
+										selection={selection}
+										setSelection={setSelection}
+									/>
+								))}
+								<View style={{height: 30}} />
+							</View>
+							<TouchableOpacity 
+								style={styles.nextButton}
+								onPress={() => nextQuestion()}
+							>
+								<Text style={styles.nextButtonText}>{currentQuestion == quiz.questions.length-1 ? 'Finish' : 'Next'}</Text>
+							</TouchableOpacity>
 						</View>
-						<TouchableOpacity 
-							style={styles.nextButton}
-							onPress={() => nextQuestion()}
-						>
-							<Text style={styles.nextButtonText}>{currentQuestion == quiz.questions.length-1 ? 'Finish' : 'Next'}</Text>
-						</TouchableOpacity>
 					</View>
-				</View>
+				</ScrollView>
       </SafeAreaView>
   );
 };
@@ -78,7 +102,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F8F9F8',
     width: '100%',
-    height: '100%',
 		paddingHorizontal: 30,
   },  
 	header: {

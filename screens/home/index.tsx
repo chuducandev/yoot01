@@ -32,12 +32,13 @@ const Home = () => {
     }
   }
 
-  async function fetchQuiz(title: string, url: string) {
+  async function fetchQuiz(id: string, title: string, url: string) {
     try {
       const { data } : any = await axios.get(url)
       if ('results' in data) {
         data.results.forEach((result: any) => console.log(result))
         const newQuiz: QuizState = {
+          id: id,
           title: title,
           questions: data.results.map((result: any) => {
             const choices: string[] = [...result.incorrect_answers, result.correct_answer]
@@ -78,10 +79,10 @@ const Home = () => {
   useEffect(() => {
     // fetchQuizzes()
     if (!loaded) {
-      fetchQuiz('Books', 'https://opentdb.com/api.php?amount=10&category=10')
-      fetchQuiz('Films', 'https://opentdb.com/api.php?amount=10&category=11')
-      fetchQuiz('Music', 'https://opentdb.com/api.php?amount=10&category=12')
-      fetchQuiz('Board Games', 'https://opentdb.com/api.php?amount=10&category=16')
+      fetchQuiz('1', 'Books', 'https://opentdb.com/api.php?amount=10&category=10')
+      fetchQuiz('2', 'Films', 'https://opentdb.com/api.php?amount=10&category=11')
+      fetchQuiz('3', 'Music', 'https://opentdb.com/api.php?amount=10&category=12')
+      fetchQuiz('4', 'Board Games', 'https://opentdb.com/api.php?amount=10&category=16')
       setLoaded(true)
     }
   }, [])

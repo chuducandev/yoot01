@@ -18,10 +18,9 @@ import User from './screens/user';
 import Main from './screens/main';
 import Quiz from './screens/quiz';
 import { Provider } from 'react-redux';
+import Results from './screens/results';
 
 const Stack = createNativeStackNavigator()
-
-
 
 const App = () => {
   useEffect(() => {
@@ -38,6 +37,7 @@ const App = () => {
         >
           <Stack.Screen name="Main" component={Main} />
           <Stack.Screen name="Quiz" component={Quiz} />
+          <Stack.Screen name="Results" component={Results} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
