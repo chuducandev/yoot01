@@ -20,7 +20,8 @@ import QuizCode from '../../components/home/quiz-code';
 import QuizCard from '../../components/home/quiz-card';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { setQuizzes, addToQuizzes } from '../../store/quizzes';
-import { QuizState } from '../../types';
+import { QuizState, UserState } from '../../types';
+import { setUser } from '../../store/user';
 
 const mapDispatch = {
   setQuizzes,
@@ -71,6 +72,7 @@ const Home = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const quizzes: QuizState[] | null = useSelector((state: RootState) => state.quizzes)
+  const user: UserState = useSelector((state: RootState) => state.user)
 
   async function fetchQuizzes() {
     const newQuizzes = await (await firestore().collection('quizzes').get()).docs.map(doc => doc.data()) as QuizState[];
@@ -83,6 +85,7 @@ const Home = () => {
 			.signOut()
       .then(() => {
         dispatch(setQuizzes([]))
+        dispatch(setUser({}))
       })
 			.catch (error => {
 				console.log(error)
@@ -115,7 +118,10 @@ const Home = () => {
                 style={styles.avatar}
                 onPress={() => handleSignOut()}  
               >
-                <Text style={styles.shortName}>LS</Text>
+                <Text style={styles.shortName}>
+                  {user.firstName != null && user.firstName.length > 0 && user.firstName[0]}
+                  {user.lastName != null && user.lastName.length > 0 && user.lastName[0]}
+                </Text>
               </TouchableOpacity>
             </View>
             <QuizCode />

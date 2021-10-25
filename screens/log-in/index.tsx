@@ -16,6 +16,10 @@ import {
 import firestore from '@react-native-firebase/firestore'
 import auth from '@react-native-firebase/auth'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { UserState } from '../../types'
+import { AppDispatch, RootState } from '../../store'
+import { useSelector, useDispatch } from 'react-redux'
+import { setUser } from '../../store/user'
 
 const {width, height} = Dimensions.get('window')
 
@@ -165,6 +169,7 @@ const Login = () => {
 			.signInWithEmailAndPassword(email, password)
 			.then(() => {
 				console.log('Logged in successfully.')
+				fetchUser()
 			})
 			.catch(error => {
 				if (error.code == "auth/wrong-password") {
@@ -214,6 +219,7 @@ const Login = () => {
 					})
 					.then(() => {
 						console.log('New user data retrieved')
+						fetchUser()
 					})
 			})
 			.catch(error => {
@@ -229,6 +235,28 @@ const Login = () => {
 				console.error(error);
 			})
 	}
+
+	async function fetchUser() {
+    try {
+      const newUser: any = await (await firestore()
+        .collection('users')
+        .doc(auth().currentUser?.uid)
+        .get()).data()
+			dispatch(setUser({
+				id: auth().currentUser?.uid,
+				firstName: newUser?.firstName,
+				lastName: newUser?.lastName,
+			}))
+			console.log('Fetch user: ')
+			console.log(newUser)
+    } catch(error) {
+      console.log(error)
+    }
+    
+  }
+
+	const dispatch = useDispatch<AppDispatch>()
+  const user: UserState = useSelector((state: RootState) => state.user)
 
 	return (
 		<SafeAreaView style={{backgroundColor: '#000000'}}>

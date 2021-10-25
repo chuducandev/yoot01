@@ -1,5 +1,5 @@
 import { RouteProp, useNavigation } from '@react-navigation/core';
-import React, {useState, FC} from 'react';
+import React, {useState, FC, useEffect} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -38,6 +38,7 @@ const Results : FC<ResultsProps> = ({route}) => {
 	const [leaderboard, setLeaderboard] = useState<LeaderboardState | null>(null)
 
 	const results = useSelector((state: RootState) => state.results)
+	const user = useSelector((state: RootState) => state.user)
 	const dispatch = useDispatch<AppDispatch>()
 
 	const {time, numOfQuestions, quizId} = route.params
@@ -59,10 +60,11 @@ const Results : FC<ResultsProps> = ({route}) => {
 			.docs
 			.map(doc => doc.data()) as LeaderboardState
 		setLeaderboard(newLeaderboard)
+		setMode(1)
 		console.log(newLeaderboard)
 	}
 
-	function handleSubmitResults(name: string) {
+	function handleSubmitResults() {
 		setMode(1)
 
 		// console.log(results, numOfQuestions, a, b, time, calculatedTime, Math.floor(a * calculatedTime + b))
@@ -70,7 +72,7 @@ const Results : FC<ResultsProps> = ({route}) => {
 		firestore()
 			.collection('results')
 			.add({
-				name: name,
+				name: user.firstName + ' ' + user.lastName,
 				quizId: quizId,
 				score: score,
 			})
@@ -81,6 +83,10 @@ const Results : FC<ResultsProps> = ({route}) => {
 				ToastAndroid.show(error, ToastAndroid.SHORT)
 			})
 	}
+
+	useEffect(() => {
+		handleSubmitResults()
+	}, [])
 
   return (
 		<SafeAreaView style={{backgroundColor: '#ffffff'}}>
