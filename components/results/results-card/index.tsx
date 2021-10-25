@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, FC} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,19 +7,25 @@ import {
   View,
 } from 'react-native';
 
-const ResultsCard = () => {
+type ResultsCardProps = {
+	score: number,
+	results: number,
+	numOfQuestions: number
+}
+
+const ResultsCard: FC<ResultsCardProps> = ({score, results, numOfQuestions}) => {
   
 
   return (
 		<View style={styles.container}>
 			<Text style={styles.header}>Congratulations! You have scored</Text>
 			<View style={styles.scoreContainer}>
-				<Text style={styles.scoreText} >11</Text>
-				<Text style={styles.scoreText2}>Out of 15</Text>
+				<Text style={styles.scoreText} >{results}</Text>
+				<Text style={styles.scoreText2}>Out of {numOfQuestions}</Text>
 			</View>
 			<Text style={styles.pointHeaderText}>You have earned</Text>
 			<View style={styles.pointContainer}>
-				<Text style={styles.pointText}>1000 points</Text>
+				<Text style={styles.pointText}>{score} point{score > 1 ? 's' : ''}</Text>
 			</View>
 		</View>
   );

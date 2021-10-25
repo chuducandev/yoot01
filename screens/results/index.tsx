@@ -42,21 +42,28 @@ const Results : FC<ResultsProps> = ({route}) => {
 
 	const {time, numOfQuestions, quizId} = route.params
 
+	const a = -0.00625 * results / numOfQuestions
+	const b = 50 * results - 10000 * numOfQuestions * a
+	const calculatedTime: number = Math.max(Math.min(time, 10000 * numOfQuestions), 2000 * numOfQuestions)
+	const score = Math.floor(calculatedTime * a + b)
+
 	const navigation = useNavigation()
 
 	async function fetchLeaderboard() {
-		const newLeaderboard = await(await firestore().collection('results').orderBy(new firestore.FieldPath('score'), 'desc').get()).docs.map(doc => doc.data()) as LeaderboardState
+		const newLeaderboard = await(
+			await firestore()
+				.collection('results')
+				.where(new firestore.FieldPath('quizId'), '==', quizId)
+				.orderBy(new firestore.FieldPath('score'), 'desc')
+				.get())
+			.docs
+			.map(doc => doc.data()) as LeaderboardState
 		setLeaderboard(newLeaderboard)
 		console.log(newLeaderboard)
 	}
 
 	function handleSubmitResults(name: string) {
 		setMode(1)
-
-		const a = -0.00625 * results / numOfQuestions
-		const b = 50 * results - 10000 * numOfQuestions * a
-
-		const calculatedTime: number = Math.max(Math.min(time, 10000 * numOfQuestions), 2000 * numOfQuestions)
 
 		// console.log(results, numOfQuestions, a, b, time, calculatedTime, Math.floor(a * calculatedTime + b))
 		
@@ -65,7 +72,7 @@ const Results : FC<ResultsProps> = ({route}) => {
 			.add({
 				name: name,
 				quizId: quizId,
-				score: Math.floor(calculatedTime * a + b),
+				score: score,
 			})
 			.then(() => {
 				fetchLeaderboard()
@@ -87,7 +94,11 @@ const Results : FC<ResultsProps> = ({route}) => {
 					<Text style={styles.headerText}>Quiz Results</Text>
 					<QuestionRegular width={24} height={24} opacity={0} />
 				</View>
-				<ResultsCard />
+				<ResultsCard 
+					score={score}
+					results={results}
+					numOfQuestions={numOfQuestions}
+				/>
 				<View style={{height: 30}} />
 				{mode == 0 && <NameCard handleSubmitResults={handleSubmitResults} />}
 				{mode == 1 && leaderboard && <View>
