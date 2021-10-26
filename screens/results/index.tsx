@@ -11,13 +11,10 @@ import {
 	ToastAndroid,
 } from 'react-native';
 
-import {decode} from 'html-entities'
-
 import firestore from '@react-native-firebase/firestore';
 
 import BackRegular from '../../assets/icons/back-regular.svg'
 import QuestionRegular from '../../assets/icons/question-regular.svg'
-import ChoiceCard from '../../components/quiz/choice-card';
 import { LeaderboardState, QuizState } from '../../types';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';

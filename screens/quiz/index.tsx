@@ -20,7 +20,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { addToResults, resetResults } from '../../store/results';
-import { isDraftable } from 'immer';
 
 type QuizProps = {
 	route: RouteProp<{params: {quiz: QuizState}}>;
