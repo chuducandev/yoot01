@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>72963671933-e1drh0v24qjoum60lkccscnuiv64a1qj.apps.googleusercontent.com</string>
+	<string>72963671933-n89uugabfb09udqcm186h6vk9nauv38k.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.72963671933-e1drh0v24qjoum60lkccscnuiv64a1qj</string>
+	<string>com.googleusercontent.apps.72963671933-n89uugabfb09udqcm186h6vk9nauv38k</string>
 	<key>API_KEY</key>
 	<string>AIzaSyABgL0QuSHkyGbO5hRtO_LP0q_UmEETS18</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.reactjs.native.example.unisab</string>
+	<string>org.reactjs.native.example.yoot01</string>
 	<key>PROJECT_ID</key>
 	<string>yoot01</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:72963671933:ios:e1bd976bf762d53dfc6e14</string>
+	<string>1:72963671933:ios:51ab5030c26255dcfc6e14</string>
 </dict>
 </plist>
