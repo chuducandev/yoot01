@@ -1,18 +1,9 @@
 import React from 'react';
 import {
 	Dimensions,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
 } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Home from '../home';
-import User from '../user';
 
 
 import HomeRegular from '../../assets/icons/home-regular.svg'
@@ -64,9 +55,5 @@ const Main = () => {
       </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  
-});
 
 export default Main;

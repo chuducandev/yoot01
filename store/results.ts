@@ -1,5 +1,5 @@
 import {CaseReducer, createSlice, PayloadAction} from '@reduxjs/toolkit'
-import { QuizState, ResultsState } from '../types'
+import { ResultsState } from '../types'
 
 const resetResultsReducer: CaseReducer<ResultsState, PayloadAction<ResultsState>> = (state, action) => action.payload
 const addToResultsReducer: CaseReducer<ResultsState, PayloadAction<ResultsState>> = (state, action) => state + action.payload

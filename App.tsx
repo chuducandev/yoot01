@@ -15,14 +15,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { AppDispatch, store } from './store';
 
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
-
-import User from './screens/user';
 import Main from './screens/main';
 import Quiz from './screens/quiz';
 import { Provider, useDispatch } from 'react-redux';
 import Results from './screens/results';
 import Login from './screens/log-in';
-import { setUser } from './store/user';
 
 const Stack = createNativeStackNavigator()
 
@@ -60,9 +57,5 @@ const App = () => {
     </Provider>
   );
 };
-
-const styles = StyleSheet.create({
-
-});
 
 export default App;

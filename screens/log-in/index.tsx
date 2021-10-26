@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import React, {useState, useEffect, useContext, FC } from 'react'
+import React, {useState, useEffect, FC } from 'react'
 import {
 	View,
 	Text,
@@ -10,7 +10,6 @@ import {
 	TouchableOpacity,
 	ToastAndroid,
 	TextInput,
-	Image,
 } from 'react-native'
 
 import firestore from '@react-native-firebase/firestore'
@@ -20,8 +19,6 @@ import { UserState } from '../../types'
 import { AppDispatch, RootState } from '../../store'
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from '../../store/user'
-
-const {width, height} = Dimensions.get('window')
 
 type DefaultTextInputProps = {
 	width?: number | string, 
